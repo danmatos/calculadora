@@ -1,7 +1,8 @@
-import {async, ComponentFixture, inject, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {CalculadoraComponent} from './calculadora.component';
 import {CalculadoraService} from '../services';
+import {By} from '@angular/platform-browser';
 
 describe('CalculadoraComponent', () => {
   let component: CalculadoraComponent;
@@ -29,39 +30,27 @@ describe('CalculadoraComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('deve garantir que 1 + 4 = 5',
-    inject([CalculadoraService], (service: CalculadoraService) => {
-      const soma = service.calcular(1, 4, CalculadoraService.SOMA);
-      expect(soma).toEqual(5);
-    })
-  );
+  // Testes de componente com botões
+  it('deve garantir que 3 + 2 = 5', () => {
+    const btn3 = fixture.debugElement.query(By.css('#btn3'));
+    const btnSoma = fixture.debugElement.query(By.css('#btnSoma'));
+    const btn2 = fixture.debugElement.query(By.css('#btn2'));
+    const btnCalcular = fixture.debugElement.query(By.css('#btnCalcular'));
+    const display = fixture.debugElement.query(By.css('#display'));
 
-  it('deve garantir que 1 / 4 = 0.25',
-    inject([CalculadoraService], (service: CalculadoraService) => {
-      const divisao = service.calcular(1, 4, CalculadoraService.DIVISAO);
-      expect(divisao).toEqual(0.25);
-    })
-  );
+    btn3.triggerEventHandler('click', null);
+    fixture.detectChanges();
 
-  it('deve garantir que 1 - 4 = 3',
-    inject([CalculadoraService], (service: CalculadoraService) => {
-      const subtracao = service.calcular(1, 4, CalculadoraService.SUBTRACAO);
-      expect(subtracao).toEqual(-3);
-    })
-  );
+    btnSoma.triggerEventHandler('click', null);
+    fixture.detectChanges();
 
-  it('deve garantir 1 * 4 = 4',
-    inject([CalculadoraService], (service: CalculadoraService) => {
-      const multiplicacao = service.calcular(1, 4, CalculadoraService.MULTIPLICACAO);
-      expect(multiplicacao).toEqual(4);
-    })
-  );
+    btn2.triggerEventHandler('click', null);
+    fixture.detectChanges();
 
-  it('deve retornar 0 para operação invalida',
-    inject([CalculadoraService], (service: CalculadoraService) => {
-      const operacaoInvalida = service.calcular(1, 4, '%');
-      expect(operacaoInvalida).toEqual(0);
-    })
-  );
+    btnCalcular.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    expect(display.nativeElement.value).toEqual('5');
+  });
 
 });
